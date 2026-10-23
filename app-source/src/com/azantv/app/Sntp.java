@@ -10,7 +10,8 @@ import java.net.InetAddress;
 
 /**
  * Asks the mosque clock (ESP32) for the time over NTP: as the Wi-Fi gateway (its own Masjid-Time
- * network, 192.168.4.1), or anywhere on the same network through a broadcast request.
+ * network, 192.168.4.1), or anywhere on the same network through a broadcast request. The 4G USB
+ * stick (192.168.100.1) also answers NTP with the mobile network's time, over its Wi-Fi or USB.
  */
 public final class Sntp {
     private static final long NTP_EPOCH_OFFSET = 2208988800L;
@@ -19,7 +20,7 @@ public final class Sntp {
 
     /** Returns the current UTC time in millis from the network clock, or -1. Blocks; call off the main thread. */
     public static long query(Context c) {
-        for (String host : new String[]{systemNtp(c), gateway(c), "192.168.4.1", "255.255.255.255"}) {
+        for (String host : new String[]{systemNtp(c), gateway(c), "192.168.4.1", "192.168.100.1", "255.255.255.255"}) {
             if (host == null) continue;
             long t = queryHost(host);
             if (t > 0) return t;
