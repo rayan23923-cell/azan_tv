@@ -1,0 +1,9 @@
+# signing keys
+*.jks
+*.keystore
+
+# build output
+build/
+*.apk
+*.class
+.pio/
